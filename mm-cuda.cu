@@ -156,7 +156,7 @@ void work()
 {
 	matrix a, b, result1, result2;
 	long long before, after;
-	int correct, i, j, dim;
+	int correct, i, j;
 	cudaError_t rc;
 
 	// Allocate memory for matrices
