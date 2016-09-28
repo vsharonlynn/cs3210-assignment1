@@ -127,15 +127,14 @@ void mm(matrix a, matrix b, matrix result)
  */
 __global__ void mm_kernel(matrix a, matrix b, matrix result, int size)
 {
-	int i = blockIdx.x * blockDim.x + threadIdx.x;
-	int j = blockIdx.y * blockDim.y + threadIdx.y;
-	int k;
+	int i = blockIdx.x;
+	int j = blockIdx.y;
+	int k = threadIdx.x;
 
 	if (i >= size || j >= size)
 		return;
 
-	for(k = 0; k < size; k++)
-		result.element[i][j] += a.element[i][k] * b.element[k][j];
+	result.element[i][k] += a.element[i][j] * b.element[j][k];
 }
 
 void print_matrix(matrix m)
@@ -177,9 +176,8 @@ void work()
         fprintf(stderr, "Matrix multiplication on CPU took %1.2f seconds\n", ((float)(after - before))/1000000000);
 
 	// Perform CUDA matrix  multiplication
-	dim3 block(32, 32);			// a block of 32 x 32 CUDA threads
-	dim = (size % 32 == 0) ? size / 32 : size / 32 + 1;
-	dim3 grid(dim, dim);	// a grid of CUDA thread blocks
+	dim3 block(size);			// a block of 32 x 32 CUDA threads
+	dim3 grid(size, size);	// a grid of CUDA thread blocks
 	before = wall_clock_time();
 	mm_kernel<<<grid, block>>>(a, b, result2, size);
 	cudaDeviceSynchronize();
