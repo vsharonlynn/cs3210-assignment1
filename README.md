@@ -11,6 +11,6 @@ $ ./mm-cuda 512
 ```
 
 To run matrix of size 1024 x 1024.
-``` shell
+```shell
 $ ./mm-cuda 1024
 ```
