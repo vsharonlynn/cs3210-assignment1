@@ -176,8 +176,8 @@ void work()
         fprintf(stderr, "Matrix multiplication on CPU took %1.2f seconds\n", ((float)(after - before))/1000000000);
 
 	// Perform CUDA matrix  multiplication
-	dim3 block(size);			// a block of 32 x 32 CUDA threads
-	dim3 grid(size, size);	// a grid of CUDA thread blocks
+	dim3 block(size);				// a block of size CUDA threads
+	dim3 grid(size, size);	// a grid of size x size CUDA thread blocks
 	before = wall_clock_time();
 	mm_kernel<<<grid, block>>>(a, b, result2, size);
 	cudaDeviceSynchronize();
